@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Toolkit</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔐 Cybersecurity Toolkit</h1>
+            <p>A comprehensive suite of security utilities and tools</p>
+        </header>
+
+        <nav class="navbar">
+            <button class="nav-btn active" onclick="switchTool('password-checker')">Password Checker</button>
+            <button class="nav-btn" onclick="switchTool('password-generator')">Password Generator</button>
+            <button class="nav-btn" onclick="switchTool('hash-generator')">Hash Generator</button>
+            <button class="nav-btn" onclick="switchTool('base64-encoder')">Base64 Encoder</button>
+            <button class="nav-btn" onclick="switchTool('url-encoder')">URL Encoder</button>
+            <button class="nav-btn" onclick="switchTool('cipher-tools')">Cipher Tools</button>
+        </nav>
+
+        <main class="main-content">
+            <!-- Password Strength Checker -->
+            <section id="password-checker" class="tool-section active">
+                <h2>Password Strength Checker</h2>
+                <div class="form-group">
+                    <label for="password-input">Enter Password:</label>
+                    <input type="password" id="password-input" placeholder="Enter your password"
+                        oninput="checkPasswordStrength()">
+                </div>
+                <div id="strength-meter" class="strength-meter">
+                    <div id="strength-bar" class="strength-bar"></div>
+                </div>
+                <div id="strength-text" class="strength-text"></div>
+                <div id="feedback" class="feedback"></div>
+                <button class="btn btn-primary" onclick="togglePasswordVisibility()">Show Password</button>
+            </section>
+
+            <!-- Password Generator -->
+            <section id="password-generator" class="tool-section">
+                <h2>Password Generator</h2>
+                <div class="form-group">
+                    <label for="pwd-length">Password Length:</label>
+                    <input type="number" id="pwd-length" min="8" max="128" value="16">
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="uppercase" checked> Include Uppercase (A-Z)</label>
+                    <label><input type="checkbox" id="lowercase" checked> Include Lowercase (a-z)</label>
+                    <label><input type="checkbox" id="numbers" checked> Include Numbers (0-9)</label>
+                    <label><input type="checkbox" id="symbols" checked> Include Symbols (!@#$)</label>
+                </div>
+                <button class="btn btn-primary" onclick="generatePassword()">Generate Password</button>
+                <div class="result-box">
+                    <input type="text" id="generated-password" readonly
+                        placeholder="Generated password will appear here">
+                    <button class="btn btn-secondary" onclick="copyToClipboard('generated-password')">Copy</button>
+                </div>
+            </section>
+
+            <!-- Hash Generator -->
+            <section id="hash-generator" class="tool-section">
+                <h2>Hash Generator</h2>
+                <div class="form-group">
+                    <label for="hash-input">Enter Text:</label>
+                    <textarea id="hash-input" placeholder="Enter text to hash" rows="4"></textarea>
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="md5-hash" checked> MD5</label>
+                    <label><input type="checkbox" id="sha1-hash" checked> SHA-1</label>
+                    <label><input type="checkbox" id="sha256-hash" checked> SHA-256</label>
+                    <label><input type="checkbox" id="sha512-hash" checked> SHA-512</label>
+                </div>
+                <button class="btn btn-primary" onclick="generateHashes()">Generate Hashes</button>
+                <div id="hash-results" class="hash-results"></div>
+            </section>
+
+            <!-- Base64 Encoder/Decoder -->
+            <section id="base64-encoder" class="tool-section">
+                <h2>Base64 Encoder/Decoder</h2>
+                <div class="form-group">
+                    <label for="base64-input">Input Text:</label>
+                    <textarea id="base64-input" placeholder="Enter text to encode or decode" rows="4"></textarea>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="encodeBase64()">Encode to Base64</button>
+                    <button class="btn btn-primary" onclick="decodeBase64()">Decode from Base64</button>
+                </div>
+                <div class="result-box">
+                    <textarea id="base64-output" readonly rows="4" placeholder="Output will appear here"></textarea>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('base64-output')">Copy</button>
+                </div>
+            </section>
+
+            <!-- URL Encoder/Decoder -->
+            <section id="url-encoder" class="tool-section">
+                <h2>URL Encoder/Decoder</h2>
+                <div class="form-group">
+                    <label for="url-input">Input Text:</label>
+                    <textarea id="url-input" placeholder="Enter text to encode or decode" rows="4"></textarea>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="encodeURL()">Encode URL</button>
+                    <button class="btn btn-primary" onclick="decodeURL()">Decode URL</button>
+                </div>
+                <div class="result-box">
+                    <textarea id="url-output" readonly rows="4" placeholder="Output will appear here"></textarea>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('url-output')">Copy</button>
+                </div>
+            </section>
+
+            <!-- Cipher Tools -->
+            <section id="cipher-tools" class="tool-section">
+                <h2>Cipher Tools</h2>
+                <div class="form-group">
+                    <label for="cipher-type">Select Cipher:</label>
+                    <select id="cipher-type" onchange="updateCipherOptions()">
+                        <option value="caesar">Caesar Cipher</option>
+                        <option value="rot13">ROT13</option>
+                        <option value="atbash">Atbash Cipher</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cipher-shift">Shift Value:</label>
+                    <input type="number" id="cipher-shift" min="1" max="25" value="3">
+                </div>
+                <div class="form-group">
+                    <label for="cipher-input">Input Text:</label>
+                    <textarea id="cipher-input" placeholder="Enter text to cipher/decipher" rows="4"></textarea>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="cipherEncode()">Encode</button>
+                    <button class="btn btn-primary" onclick="cipherDecode()">Decode</button>
+                </div>
+                <div class="result-box">
+                    <textarea id="cipher-output" readonly rows="4" placeholder="Output will appear here"></textarea>
+                    <button class="btn btn-secondary" onclick="copyToClipboard('cipher-output')">Copy</button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Cybersecurity Toolkit | For Educational Purposes</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
